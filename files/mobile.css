@@ -178,3 +178,112 @@ body {
     height: calc(var(--vh, 1vh) * 100);
   }
 }
+
+/* ── 10. BOOT LOG SCROLL ──────────────────────────────────
+   mobile.js sets overflow-y:auto and max-height via JS.
+   Hide the scrollbar visually (keeps the atmosphere) but
+   keep it functional.                                     */
+@media (max-width: 768px) {
+  #boot-log {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;          /* Firefox */
+  }
+  #boot-log::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+}
+
+/* ── 11. AUDIO GATE OVERLAY ───────────────────────────────
+   Appears over #sc-ui on touch devices if autoplay stalls.
+   Preserves the player aesthetic — same glass/glow language.*/
+#audio-gate {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  border-radius: inherit;
+  transition: opacity .5s ease;
+  cursor: pointer;
+}
+.gate-inner {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 8px;
+  letter-spacing: .5em;
+  color: rgba(180, 140, 255, .72);
+  text-transform: lowercase;
+  animation: gatePulse 2.4s ease-in-out infinite;
+}
+@keyframes gatePulse {
+  0%,100% { opacity: .45; }
+  50%      { opacity: 1;   }
+}
+
+/* ── 12. TRACK TITLE MARQUEE ──────────────────────────────
+   Only activates when mobile.js adds class .marquee.
+   Uses CSS animation — no JS loop required.               */
+@media (max-width: 768px) {
+  #sc-track.marquee {
+    /* Remove clip — let it scroll */
+    text-overflow: clip;
+    /* Mask edges for a fade-out feel */
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 8%,
+      black 85%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 8%,
+      black 85%,
+      transparent 100%
+    );
+    overflow: hidden;
+  }
+  #sc-track.marquee span,
+  #sc-track.marquee {
+    display: inline-block;
+    white-space: nowrap;
+    animation: marqueeScroll 12s linear infinite;
+    /* Pause on touch so user can read the full title */
+    animation-play-state: running;
+  }
+  #sc-track.marquee:active {
+    animation-play-state: paused;
+  }
+}
+@keyframes marqueeScroll {
+  0%   { transform: translateX(0); }
+  /* scroll left by 50% then loop — the text itself provides the width */
+  45%  { transform: translateX(-42%); }
+  55%  { transform: translateX(-42%); } /* hold at end briefly */
+  100% { transform: translateX(0); }
+}
+
+/* ── 13. SWIPE HINT — SUBTLE INDICATOR ───────────────────
+   Injected as a real DOM element by mobile.js (id=swipe-hint)
+   so it doesn't conflict with #sc-ui::after (scan line).   */
+@media (pointer: coarse) {
+  #swipe-hint {
+    position: absolute;
+    bottom: 7px;
+    right: 10px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 6px;
+    letter-spacing: .3em;
+    color: rgba(140, 100, 255, .28);
+    pointer-events: none;
+    animation: swipeHintFade 4s ease 1.5s forwards;
+    z-index: 5;
+  }
+}
+@keyframes swipeHintFade {
+  0%   { opacity: 1; }
+  70%  { opacity: .3; }
+  100% { opacity: 0; pointer-events: none; }
+}
