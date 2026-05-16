@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>n u y o h</title>
+<script>
+(function(){
+  const full='n u y o h';
+  const pause=2200;
+  const typeSpeed=120;
+  const eraseSpeed=60;
+  let i=0, erasing=false;
+  function tick(){
+    if(!erasing){
+      document.title=full.slice(0,i);
+      i++;
+      if(i>full.length){erasing=false;setTimeout(()=>{erasing=true;tick();},pause);return;}
+    } else {
+      document.title=full.slice(0,i);
+      i--;
+      if(i<0){erasing=false;i=0;setTimeout(tick,pause);return;}
+    }
+    setTimeout(tick, erasing ? eraseSpeed : typeSpeed);
+  }
+  setTimeout(tick, 800);
+})();
+</script>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="mobile.css">
+</head>
+<body>
+
+<!-- WORLD LAYER -->
+<canvas id="bg"></canvas>
+<canvas id="glitch-canvas"></canvas>
+<canvas id="name-particles"></canvas>
+<div id="glitch-flash"></div>
+
+<!-- OVERLAYS -->
+<div class="scan"></div>
+<div class="vig"></div>
+
+<!-- CURSOR -->
+<div id="cur"></div>
+<div id="cur-ring"></div>
+<div id="cur-aura"></div>
+
+<!-- CORNER LABELS -->
+<div class="co" id="co-tl">N U Y O H</div>
+<div class="co" id="co-tr">SYS · ONLINE</div>
+<div class="co" id="co-bl">00.00.00.00</div>
+<div class="co" id="co-br">∞</div>
+
+<!-- ENTER SCREEN -->
+<div class="screen" id="s-enter">
+  <div class="e-wrap">
+    <div class="e-sup">nuyoh</div>
+    <div class="e-line"></div>
+    <div class="e-btn" id="btn-enter">enter</div>
+  </div>
+</div>
+
+<!-- BOOT SCREEN -->
+<div class="screen off" id="s-boot">
+  <div id="boot-log"></div>
+  <div id="boot-sig">nuyoh</div>
+</div>
+
+<!-- MAIN SCREEN -->
+<div class="screen off" id="s-main">
+  <div class="m-wrap">
+    <div class="m-name" id="m-name">nuyoh</div>
+    <div class="m-sep"></div>
+
+    <div class="floating-icons">
+      <!-- Instagram -->
+      <a class="float-icon" href="https://www.instagram.com/nuy0h/" target="_blank" title="Instagram">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      </a>
+      <!-- Twitter / X -->
+      <a class="float-icon" href="https://x.com/nu7oh" target="_blank" title="Twitter / X">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.258 5.629L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg>
+      </a>
+      <!-- YouTube -->
+      <a class="float-icon" href="https://www.youtube.com/@nu7oh" target="_blank" title="YouTube">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      </a>
+      <!-- Spotify -->
+      <a class="float-icon" href="https://open.spotify.com/artist/1w7LLF7XdhZze6qMEMsdAX" target="_blank" title="Spotify">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+      </a>
+      <!-- Bandcamp -->
+      <a class="float-icon" href="https://nuyoh.bandcamp.com" target="_blank" title="Bandcamp">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M0 18.75l7.437-13.5H24l-7.438 13.5z"/></svg>
+      </a>
+      <!-- SoundCloud -->
+      <a class="float-icon" href="https://soundcloud.com/nuyoh" target="_blank" title="SoundCloud">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M1.175 12.225c-.015 0-.03.001-.044.004a.229.229 0 0 0-.131.094.224.224 0 0 0-.033.148l.367 2.57-.367 2.57a.225.225 0 0 0 .033.148.229.229 0 0 0 .131.094c.014.003.029.004.044.004.048 0 .094-.017.13-.047a.224.224 0 0 0 .078-.148l.416-2.621-.416-2.621a.224.224 0 0 0-.078-.148.198.198 0 0 0-.13-.047zm1.59-.41c-.019 0-.038.003-.056.008a.278.278 0 0 0-.163.112.272.272 0 0 0-.041.181l.408 2.909-.408 2.909a.272.272 0 0 0 .041.181.278.278 0 0 0 .163.112c.018.005.037.008.056.008.237 0 .277-.181.277-.301l.465-2.909-.465-2.909c0-.12-.04-.301-.277-.301zm1.647-.218c-.028 0-.056.005-.083.014a.325.325 0 0 0-.195.147.321.321 0 0 0-.049.215l.449 2.868-.449 2.868a.32.32 0 0 0 .049.215.326.326 0 0 0 .195.147c.027.009.055.014.083.014.099 0 .192-.042.259-.116a.33.33 0 0 0 .083-.26l.511-2.868-.511-2.868a.33.33 0 0 0-.083-.26.356.356 0 0 0-.259-.116zm5.559-1.74c-.173 0-.342.016-.505.048-.104-2.447-2.109-4.405-4.577-4.405-.628 0-1.227.127-1.771.357-.205.085-.26.172-.262.251v8.648c.002.081.063.148.145.163h7.971c.377 0 .683-.306.683-.682V10.54c0-1.132-.918-2.05-2.051-2.05h-.633zm2.076.124c-.018 0-.036.002-.054.005-.129.022-.233.148-.233.289l-.007.046.345 3.702-.345 3.702c0 .141.104.267.233.289.018.003.036.005.054.005.161 0 .302-.124.302-.294l.393-3.702-.393-3.702c0-.17-.141-.294-.302-.294h.007zm1.614-.19c-.209 0-.381.171-.381.381l-.007.04.342 3.892-.342 3.892c0 .21.172.381.381.381s.381-.171.381-.381l.389-3.892-.389-3.892c0-.21-.172-.381-.381-.381zm1.591-.109c-.247 0-.447.2-.447.447l-.007.04.338 4.041-.338 4.041c0 .247.2.447.447.447s.447-.2.447-.447l.385-4.041-.385-4.041c0-.247-.2-.447-.447-.447zm1.613-.121c-.284 0-.514.23-.514.514l-.007.04.334 4.202-.334 4.202c0 .284.23.514.514.514s.514-.23.514-.514l.38-4.202-.38-4.202c0-.284-.23-.514-.514-.514zm1.612-.109c-.321 0-.581.26-.581.581l-.007.04.331 4.311-.331 4.311c0 .321.26.581.581.581s.581-.26.581-.581l.376-4.311-.376-4.311c0-.321-.26-.581-.581-.581z"/></svg>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<!-- EIRA WIDGET -->
+<div id="eira-widget">
+  <div id="eira-inner">
+    <div id="eira-header">
+      <span id="eira-label">E I R A</span>
+      <span id="eira-dot"></span>
+    </div>
+    <div id="eira-status-wrap">
+      <span id="eira-status">OBSERVING</span>
+    </div>
+    <canvas id="eira-wave" width="110" height="18"></canvas>
+    <div id="eira-diag"></div>
+  </div>
+</div>
+
+<!-- PLAYER -->
+<div id="player">
+  <div id="sc-ui">
+    <div id="sc-top">
+      <span id="sc-label">audio stream</span>
+      <span id="sc-live-dot"></span>
+    </div>
+    <div id="sc-track">loading signal&hellip;</div>
+    <div id="sc-wave"></div>
+    <div id="sc-prog-wrap"><div id="sc-prog"></div></div>
+    <div id="sc-ctrl">
+      <span id="sc-time">00:00 / --:--</span>
+      <div id="sc-btns">
+        <span class="sc-btn" id="btn-prev">⟨⟨</span>
+        <span class="sc-btn play-btn" id="btn-play" style="display:inline-block;width:20px;text-align:center;position:relative;">
+          <span id="btn-play-icon" style="position:relative;">▶</span>
+          <span id="btn-pause-icon" style="display:none;letter-spacing:.05em;">II</span>
+        </span>
+        <span class="sc-btn" id="btn-next">⟩⟩</span>
+      </div>
+      <span id="sc-vol">vol ▲</span>
+    </div>
+  </div>
+  <iframe id="sc-iframe" src="" allow="autoplay"></iframe>
+</div>
+
+<!-- SCRIPTS: background first (sets up world + window.BG), then UI logic -->
+<script src="background.js"></script>
+<script src="main.js"></script>
+<script src="mobile.js"></script>
+
+</body>
+</html>

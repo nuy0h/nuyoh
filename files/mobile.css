@@ -1,0 +1,180 @@
+/* ═══════════════════════════════════════════════════════════
+   mobile.css  —  compatibility + stability layer only
+   All rules are guarded by media or pointer queries.
+   Desktop experience: completely unchanged.
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── 1. VIEWPORT LOCK ─────────────────────────────────────
+   Fixes the iOS 100vh bug (browser chrome shifts content),
+   prevents horizontal overflow on all screen sizes.        */
+html {
+  height: -webkit-fill-available; /* iOS Safari fill-available */
+}
+body {
+  min-height: -webkit-fill-available;
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+/* ── 2. CURSOR DISABLE ON TOUCH ──────────────────────────
+   Custom cursor is meaningless on coarse-pointer devices.
+   JS (mobile.js) also kills the rAF loop; this is the CSS
+   safety net so nothing bleeds through.                    */
+@media (pointer: coarse) {
+  #cur,
+  #cur-ring,
+  #cur-aura { display: none !important; }
+
+  html, body { cursor: auto; }
+
+  /* Restore pointer on interactive elements */
+  .e-btn, .m-name, .m-link,
+  .sc-btn, .float-icon, #sc-vol,
+  #sc-prog-wrap, #sc-wave { cursor: pointer; }
+}
+
+/* ── 3. RESPONSIVE — MAIN BREAKPOINT 768px ───────────────*/
+@media (max-width: 768px) {
+
+  /* CORNER LABELS — pull in from edge, tighten spacing */
+  .co              { font-size: 6.5px; letter-spacing: .14em; }
+  #co-tl           { top: 14px; left: 14px; }
+  #co-tr           { top: 14px; right: 14px; }
+  #co-bl           { bottom: 14px; left: 14px; }
+  #co-br           { bottom: 14px; right: 14px; }
+
+  /* BOOT SCREEN — stop log text from overflowing narrow vp */
+  #s-boot          { padding: 0 24px 48px; }
+  #boot-log        { max-width: 100%; font-size: 8px; }
+  #boot-sig        { right: 24px; bottom: 48px; }
+
+  /* ENTER SCREEN */
+  .e-btn           { font-size: 13px; letter-spacing: .44em; }
+
+  /* MAIN NAME — tighten letter-spacing to fit narrow vp */
+  .m-name          { font-size: 16px; letter-spacing: .7em; margin-bottom: 32px; }
+  .m-sep           { margin-bottom: 32px; }
+
+  /* SOCIAL ICONS
+     6 icons × 36px + 5 × 18px gap = 306px — clips at 320px.
+     Shrink just enough to clear 320px safely.              */
+  .floating-icons  { gap: 12px; }
+  .float-icon      { width: 32px; height: 32px; }
+  .float-icon svg  { width: 14px; height: 14px; }
+
+  /* EIRA WIDGET — tuck in, scale down */
+  #eira-widget     { top: 14px; right: 14px; }
+  #eira-inner      { padding: 8px 10px 7px; min-width: 110px; }
+  #eira-label      { font-size: 6px; letter-spacing: .44em; }
+  #eira-status     { font-size: 7px; letter-spacing: .22em; }
+  #eira-diag       { font-size: 5.5px; }
+  #eira-wave       { width: 90px; }
+
+  /* PLAYER
+     300px fixed width clips at 320px. Make it fluid.
+     Override desktop translateX(-50%) centering entirely.  */
+  #player {
+    width: calc(100vw - 28px);
+    left: 14px;
+    transform: none;        /* kill the desktop centering  */
+  }
+  #player.on       { bottom: 14px; }
+  #sc-ui           { width: 100%; }
+
+  /* Larger touch targets on player controls */
+  .sc-btn          { font-size: 8px; }
+  .sc-btn.play-btn { font-size: 10px; }
+
+  /* Progress bar — thicker for touch tap accuracy */
+  #sc-prog-wrap {
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(120,80,220,.15);
+  }
+  #sc-prog         { height: 6px; border-radius: 3px; }
+  #sc-prog::after  { top: 0; }
+}
+
+/* ── 4. VERY NARROW — 375px ──────────────────────────────*/
+@media (max-width: 375px) {
+  .floating-icons  { gap: 9px; }
+  .float-icon      { width: 30px; height: 30px; }
+  .float-icon svg  { width: 13px; height: 13px; }
+  .m-name          { font-size: 14px; letter-spacing: .55em; }
+}
+
+/* ── 5. GHOST TEXT — OVERFLOW GUARD ──────────────────────
+   Long whitespace:nowrap phrases cause horizontal scroll
+   on mobile. Allow wrap + clamp font on small screens.     */
+@media (max-width: 768px) {
+  .ghost {
+    max-width: 88vw;
+    white-space: normal;
+    font-size: clamp(7px, 2.2vw, 11px) !important;
+  }
+}
+
+/* ── 6. REDUCED MOTION — ACCESSIBILITY ───────────────────
+   Respects prefers-reduced-motion without killing the
+   atmosphere — just stills the most intensive animations. */
+@media (prefers-reduced-motion: reduce) {
+  .float-icon      { animation: none; transform: none; }
+  #eira-widget     { animation: none; }
+  .e-btn           { animation: none; opacity: .65; }
+  .e-line          { animation: none; opacity: .18; }
+}
+
+/* ── 7. SAFE-AREA INSETS — NOTCH / HOME INDICATOR ────────
+   Requires viewport-fit=cover in the <meta> tag (added).
+   Prevents the player from sitting under iOS home bar
+   or Android gesture nav strip.                           */
+@supports (bottom: env(safe-area-inset-bottom)) {
+  @media (max-width: 768px) {
+    #player.on {
+      bottom: calc(14px + env(safe-area-inset-bottom));
+    }
+    #co-bl { bottom: calc(14px + env(safe-area-inset-bottom)); }
+    #co-br { bottom: calc(14px + env(safe-area-inset-bottom)); }
+  }
+}
+
+/* ── 8. LANDSCAPE PHONE — COMPACT LAYOUT ─────────────────
+   Portrait rules already handle width. Landscape phones
+   (≤768px wide AND ≤480px tall) need height guards:
+   - boot screen can't scroll, so reduce line-height
+   - player bottom must not collide with content
+   - EIRA widget is hidden by JS below 420px height         */
+@media (max-width: 768px) and (max-height: 480px) and (orientation: landscape) {
+
+  /* Boot log: tighter vertical rhythm so more lines fit */
+  #boot-log        { line-height: 1.7; font-size: 7.5px; }
+  #s-boot          { padding: 0 24px 36px; }
+
+  /* Player: push up less so it doesn't eat the whole screen */
+  #player.on       { bottom: 8px; }
+
+  /* Name + sep: compress vertical gap */
+  .m-name          { margin-bottom: 18px; font-size: 14px; }
+  .m-sep           { height: 24px; margin-bottom: 18px; }
+
+  /* Icons: tighten row in landscape */
+  .floating-icons  { margin-top: 6px; gap: 10px; }
+  .float-icon      { width: 28px; height: 28px; }
+  .float-icon svg  { width: 12px; height: 12px; }
+
+  /* Corner labels: hide co-bl/co-br in landscape — player covers them */
+  #co-bl, #co-br   { display: none; }
+}
+
+/* ── 9. SCREENS — dvh FALLBACK FOR FIXED FULLSCREEN ───────
+   .screen uses position:fixed + inset:0 which is already
+   immune to the 100vh bug, but guard any future height
+   additions with the --vh custom property set by mobile.js. */
+@media (max-width: 768px) {
+  .screen {
+    /* inset:0 already correct; belt-and-suspenders for
+       any descendant that may use height:100%            */
+    height: 100%;
+    height: calc(var(--vh, 1vh) * 100);
+  }
+}
