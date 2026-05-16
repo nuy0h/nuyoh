@@ -38,14 +38,19 @@
     ctx.fillStyle = grd;
     ctx.fillRect(0, 0, W, H);
 
-    for (let i = 0; i < NUM; i++) {
+    /* BG.activeCount is set to NUM by default.
+       mobile.js lowers it to reduce O(n²) connection work. */
+    const active = (window.BG && window.BG.activeCount < NUM)
+      ? window.BG.activeCount : NUM;
+
+    for (let i = 0; i < active; i++) {
       const p = pts[i];
       p.x += p.vx; p.y += p.vy;
       if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
       if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
       p.phi += p.spd;
       const a = p.baseA * (.5 + .5 * Math.sin(p.phi));
-      for (let j = i + 1; j < NUM; j++) {
+      for (let j = i + 1; j < active; j++) {
         const q = pts[j];
         const dx = p.x - q.x, dy = p.y - q.y, d2 = dx * dx + dy * dy;
         if (d2 < 7000) {
@@ -264,6 +269,12 @@
     forceTriggerGlitch,
     bigBurst,
     spawnNameBurst,   // consumed by main.js hover handler
+
+    /* Mobile throttle: mobile.js sets activeCount to cap the
+       particle loop. drawBG reads BG.activeCount each frame.
+       Default = NUM (full). mobile.js overrides downward.    */
+    activeCount: NUM,
+    pts,              // direct array ref — mobile.js zeros excess
   };
 
 })();
